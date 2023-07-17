@@ -1,0 +1,10 @@
+{
+  "name": "typescript",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "@aspectjs/common": "^0.3.2",
+    "@aspectjs/core": "^0.3.7",
+    "toastify-js": "^1.12.0"
+  }
+}
