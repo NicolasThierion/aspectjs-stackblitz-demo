@@ -1,1 +1,14 @@
-export class Comment {}
+import { MinLength } from "./annotations/min-length.annotation";
+import { NotBlank } from "./annotations/not-blank.annotation";
+
+export class Comment {
+  @MinLength(3)
+  username: string;
+  @NotBlank()
+  value: string;
+
+  constructor(comment: any) {
+    this.username = comment.username;
+    this.value = comment.value;
+  }
+}

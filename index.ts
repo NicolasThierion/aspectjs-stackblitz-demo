@@ -1,15 +1,32 @@
 // Import stylesheets
-import './style.css';
-import './aop';
-import { Validated } from './annotations/validated.annotation';
-// Write TypeScript code!
-const appDiv: HTMLElement = document.getElementById('app');
+import { Toasted } from "./annotations/toasted.annotation";
+import { Validated } from "./annotations/validated.annotation";
+import "./aop";
+import { Comment } from "./comment.model";
+import "./style.css";
 
 class Controller {
-  submitForm(@Validated() comment: Comment) {
-    console.log('submit');
+  createComment(form: HTMLFormElement) {
+    return new Comment(Object.fromEntries(new FormData(form)));
+  }
+
+  @Toasted() // convert log.info, log.error into toasts
+  submitComment(@Validated() comment: Comment) {
+    // comment has been validated. Send it over the network
+    console.info("comment sucessfully published");
     return false;
   }
 }
 
 (window as any).controller = new Controller();
+
+function test() {
+  (document.querySelector("#usernameInput") as HTMLInputElement).value =
+    "hello username";
+  (document.querySelector("#commentInput") as HTMLInputElement).value =
+    "hello comment";
+
+  (document.querySelector("[type=submit]") as HTMLElement).click();
+}
+
+test();
