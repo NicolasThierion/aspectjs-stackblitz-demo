@@ -19,14 +19,3 @@ class Controller {
 }
 
 (window as any).controller = new Controller();
-
-function test() {
-  (document.querySelector("#usernameInput") as HTMLInputElement).value =
-    "hello username";
-  (document.querySelector("#commentInput") as HTMLInputElement).value =
-    "hello comment";
-
-  (document.querySelector("[type=submit]") as HTMLElement).click();
-}
-
-test();

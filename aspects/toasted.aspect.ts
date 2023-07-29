@@ -16,7 +16,6 @@ export class ToastedAspect {
       return jp(...jpArgs);
     } catch (e) {
       console.error(e);
-      throw e;
     } finally {
       this.restoreConsole();
     }

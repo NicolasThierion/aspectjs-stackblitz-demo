@@ -10,6 +10,7 @@ import {
   JoinpointType,
   on,
 } from "@aspectjs/core";
+import { Email } from "../annotations/email.annotation";
 import { MinLength } from "../annotations/min-length.annotation";
 import { NotBlank } from "../annotations/not-blank.annotation";
 import { Validated } from "../annotations/validated.annotation";
@@ -41,6 +42,13 @@ export class ValidatedAspect {
         .find()
         // validate all attributes annotated with @NotBlank()
         .forEach(this.validateNotBlank);
+
+      // find all @Email annotations
+      getAnnotations(Email)
+        .onProperty(value)
+        .find()
+        // validate all attributes annotated with @NotBlank()
+        .forEach(this.validateEmail);
     });
 
     validatedAnnotations.forEach((a) => {
@@ -53,8 +61,8 @@ export class ValidatedAspect {
       typeof MinLength
     >
   ) {
-    const value = annotation.target.value as number;
-    if (value < annotation.args[0]) {
+    const value = annotation.target.value as string;
+    if (value.length < annotation.args[0]) {
       throw new Error(
         `${annotation.ref} failed on ${annotation.target.label} (value: ${value})`
       );
@@ -66,6 +74,17 @@ export class ValidatedAspect {
   ) {
     const value = annotation.target.value as string;
     if (value === "" || value === undefined || value === null) {
+      throw new Error(
+        `${annotation.ref} failed on ${annotation.target.label} (value: ${value})`
+      );
+    }
+  }
+
+  validateEmail(
+    annotation: BoundAnnotationContext<AnnotationType.PROPERTY, typeof Email>
+  ) {
+    const value = annotation.target.value as string;
+    if (!value.match(/.+@.+\..+/)) {
       throw new Error(
         `${annotation.ref} failed on ${annotation.target.label} (value: ${value})`
       );
